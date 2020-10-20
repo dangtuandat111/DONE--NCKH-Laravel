@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
+
+class LoginController extends Controller
+{
+    //
+
+    public function index() {
+    	return view('login.index');
+    }
+
+
+    public function show() {
+    	echo "day la controller";
+    }
+
+}
+
+

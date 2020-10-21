@@ -9,7 +9,7 @@ use App\Http\Controllers;
 use app\Http\Controllers\AuthController;
 use app\Http\Controllers\Controller;	
 use app\Http\Controllers\LoginController;
-
+use DB;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,20 +21,51 @@ use app\Http\Controllers\LoginController;
 |
 */
 
-Route::get('/', function () {
-    return view('admin.home');
+Route::get('/home', 'App\Http\Controllers\LoginController@home');
+
+Route::get('/login', 'App\Http\Controllers\LoginController@index');
+
+
+
+
+
+
+
+Route::post('login/dangnhap', 'App\Http\Controllers\LoginController@postLogin2');
+
+
+
+Route::get('test',function() {
+	
+
+	$t = DB::table('giangvien')->get();
+	foreach ($t as $row) {
+		# code...
+		foreach ($row as $key => $value) {
+			# code...
+			echo $key.":".$value."<br>";
+		}
+
+		echo "<hr>";
+	}
 });
 
 
+Route::get('/register', 'App\Http\Controllers\LoginController@register');
+// Route::group(['middleware' => 'guest'], funtion () {
+// 	Route::match(['get' , 'post'],'login', ['as' => 'login','uses' => 'LoginController@index']);
 
-Route::get('/login', function () {
-    return view('login.index');
-});
+// });
 
-Route::get('/login2' , 'App\Http\Controllers\LoginController@index');
-Route::get('/show' , 'LoginController@show');
 
-// route::group(['middleware' => 'guest'], function() {
+// Route::group(['middleware' => 'auth'] , function () {
+// 	Route::get('/','LoginController@home');
 
-// })
+// });
 
+
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+// Route::get('view-teachers','App\Http\Controllers\teachersController@index');
+// Route::resource('view-teachers','App\Http\Controllers\teachersController');

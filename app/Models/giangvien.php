@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class teacher extends Authenticatable
+class giangvien extends Authenticatable
 {
     use HasFactory, Notifiable;
 
@@ -48,9 +48,4 @@ class teacher extends Authenticatable
      * @var array
      */
 
-    public static function get_teacherName() {
-        return teacher_name;
-    }   
-
-   
 }

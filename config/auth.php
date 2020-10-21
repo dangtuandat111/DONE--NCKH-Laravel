@@ -46,6 +46,18 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
+
+
+        'giangvien' => [
+            'driver' => 'session',
+            'provider' => 'giangvien',
+        ],
+
+        'giangvien-api' => [
+            'driver' => 'token',
+            'provider' => 'giangvien',
+            'hash' => false,
+        ],
     ],
 
     /*
@@ -75,6 +87,12 @@ return [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+
+
+        'giangvien' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\giangvien::class,
+        ],
     ],
 
     /*
@@ -99,6 +117,14 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
+
+         'giangvien' => [
+            'provider' => 'giangvien',
+            'table' => 'password_resets',
+            'expire' => 60,
+            
+        ],
+
     ],
 
     /*

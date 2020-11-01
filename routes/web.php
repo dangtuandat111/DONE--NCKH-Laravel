@@ -21,43 +21,39 @@ use DB;
 |
 */
 
-Route::post('/home', 'App\Http\Controllers\LoginController@home')->name('home');
+// Route::post('/home', 'App\Http\Controllers\LoginController@home')->name('home');
 
-Route::get('/login', 'App\Http\Controllers\LoginController@index')->name('login');
+// Route::get('/login', 'App\Http\Controllers\LoginController@index')->name('login');
 
-Route::post('login/dangnhap', 'App\Http\Controllers\LoginController@postLogin')->name('loginAcc');
+// Route::post('login/dangnhap', 'App\Http\Controllers\LoginController@postLogin')->name('loginAcc');
 
-Route::get('test',function() {
+// Route::get('test',function() {
 	
 
-	$t = DB::table('giangvien')->get();
-	foreach ($t as $row) {
-		# code...
-		foreach ($row as $key => $value) {
-			# code...
-			echo $key.":".$value."<br>";
-		}
+// 	$t = DB::table('giangvien')->get();
+// 	foreach ($t as $row) {
+// 		# code...
+// 		foreach ($row as $key => $value) {
+// 			# code...
+// 			echo $key.":".$value."<br>";
+// 		}
 
-		echo "<hr>";
-	}
+// 		echo "<hr>";
+// 	}
+// });
+
+
+// Route::get('/register', 'App\Http\Controllers\LoginController@register');
+
+Route::group(['middleware' => 'guest' ], function() {
+	Route::match(['get','post'], 'login', ['as' => 'login', 'uses' => 'App\Http\Controllers\LoginController@index']);
+
+	Route::post('login/dangnhap', 'App\Http\Controllers\LoginController@postLogin');
+
+	Route::get('/register', 'App\Http\Controllers\LoginController@register');
+
 });
 
-
-Route::get('/register', 'App\Http\Controllers\LoginController@register');
-// Route::group(['middleware' => 'guest'], funtion () {
-// 	Route::match(['get' , 'post'],'login', ['as' => 'login','uses' => 'LoginController@index']);
-
-// });
-
-
-// Route::group(['middleware' => 'auth'] , function () {
-// 	Route::get('/','LoginController@home');
-
-// });
-
-
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-// Route::get('view-teachers','App\Http\Controllers\teachersController@index');
-// Route::resource('view-teachers','App\Http\Controllers\teachersController');
+Route::group(['middleware' => 'auth'] , function() {
+	Route::get('/home','App\Http\Controllers\LoginController@home');
+});

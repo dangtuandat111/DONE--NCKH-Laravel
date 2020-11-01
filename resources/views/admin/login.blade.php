@@ -21,17 +21,50 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href=""><b>Admin</b>LTE</a>
+    <a href="" style = "font-size: 25px"><b>Hệ thống hỗ trợ giảng dạy<b></a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
-      <p class="login-box-msg">Sign in to start your session</p>
+      <p class="login-box-msg">Đăng nhập để bắt đầu</p>
 
-      <form  method="post" action = "login/dangnhap">
+      <?php //Hiển thị thông báo thành công?>
+      @if ( Session::has('success') )
+        <div class="alert alert-success alert-dismissible" role="alert">
+          <strong>{{ Session::get('success') }}</strong>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+          </button>
+        </div>
+      @endif
+      <?php //Hiển thị thông báo lỗi?>
+      @if ( Session::has('error') )
+        <div class="alert alert-danger alert-dismissible" role="alert">
+          <strong>{{ Session::get('error') }}</strong>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+          </button>
+        </div>
+      @endif
+      @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible" role="alert">
+          <ul>
+                  @foreach ($errors->all() as $error)
+                      <li>{{ $error }}</li>
+                  @endforeach
+              </ul>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+          </button>
+        </div>
+      @endif
+      <form  method="post" action = "{{ url('/login/dangnhap') }}">
         <input type = "hidden" name = "_token" value = "{{ csrf_token() }}">
         <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Username " name = "user" required="">
+          <input type="text" class="form-control" placeholder="Email " name = "email" required="">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -51,13 +84,13 @@
             <div class="icheck-primary">
               <input type="checkbox" id="remember">
               <label for="remember">
-                Remember Me
+                Remember
               </label>
             </div>
           </div>
           <!-- /.col -->
           <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            <button type="submit" class="btn btn-primary btn-block">Gửi</button>
           </div>
           <!-- /.col -->
         </div>
@@ -66,10 +99,10 @@
       <!-- /.social-auth-links -->
 
       <p class="mb-1">
-        <a href="forgot-password.html">I forgot my password</a>
+        <a href="#">Quên mật khẩu</a>
       </p>
       <p class="mb-0">
-        <a href="register.html" class="text-center">Register a new membership</a>
+        <a href="{{ url('/register') }}" class="text-center">Đăng ký thành viên</a>
       </p>
     </div>
     <!-- /.login-card-body -->

@@ -8,26 +8,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="{{ asset('AdminLTE-3.0.5/plugins/fontawesome-free/css/all.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('AdminLTE-3.0.5/plugins/fontawesome-free/css/all.min.css ' ) }}">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- icheck bootstrap -->
-  <link rel="stylesheet" href="{{ asset('AdminLTE-3.0.5/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('AdminLTE-3.0.5/plugins/icheck-bootstrap/icheck-bootstrap.min.css ') }}">
   <!-- Theme style -->
-  <link rel="stylesheet" href="{{ asset('AdminLTE-3.0.5/dist/css/adminlte.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('AdminLTE-3.0.5/dist/css/adminlte.min.css ') }}">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
 <body class="hold-transition register-page">
 <div class="register-box">
   <div class="register-logo">
-    <a href=""><b>Admin</b>LTE</a>
+    <a href="" style = "font-size: 25px"><b>Hệ thống hỗ trợ giảng dạy<b></a>
   </div>
 
   <div class="card">
     <div class="card-body register-card-body">
-      <p class="login-box-msg">Register a new membership</p>
+      <p class="login-box-msg">Đăng ký thành viên mới</p>
 
+      @if ( Session::has('error') )
+      <div class="alert alert-danger alert-dismissible" role="alert">
+        <strong>{{ Session::get('error') }}</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+      </div>
+    @endif
+    @if ($errors->any())
+      <div class="alert alert-danger alert-dismissible" role="alert">
+        <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+      </div>
+    @endif
       <form method="post" action = "home">
       	<input type = "hidden" name = "_token" value = "{{ csrf_token() }}">
         <div class="input-group mb-3">
@@ -65,15 +87,15 @@
         <div class="row">
           <div class="col-8">
             <div class="icheck-primary">
-              <input type="checkbox" id="agreeTerms" name="terms" value="agree">
+             
               <label for="agreeTerms">
-               I agree to the <a href="#">terms</a>
+               <a href="{{ url('/login') }}" class="text-center">Về trang login</a>
               </label>
             </div>
           </div>
           <!-- /.col -->
           <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">Register</button>
+            <button type="submit" class="btn btn-primary btn-block">Đăng ký</button>
           </div>
           <!-- /.col -->
         </div>
@@ -86,7 +108,7 @@
 <!-- jQuery -->
 <script src="{{ asset('AdminLTE-3.0.5/plugins/jquery/jquery.min.js') }}"></script>
 <!-- Bootstrap 4 -->
-<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('AdminLTE-3.0.5/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('AdminLTE-3.0.5/dist/js/adminlte.min.js') }}"></script>
 </body>

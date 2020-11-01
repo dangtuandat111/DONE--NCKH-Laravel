@@ -29,7 +29,7 @@ class giangvien extends Authenticatable
         'user',
         'password',
         'id_department',
-        'university teacher rank '
+        'teacherRank'
     ];
 
     /**

@@ -1,7 +1,6 @@
 @extends('admin.master')
 @section('body')
 
-
 <div class="wrapper">
 
   <!-- Navbar -->
@@ -47,10 +46,11 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="AdminLTE-3.0.5/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="../AdminLTE-3.0.5/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Đặng Tuấn Đạt</a> <!-- su dung get user de lay -->
+          
+          <a href="#" class="d-block">{{  Auth::guard('giangvien')->teacher_name }}</a> <!-- su dung get user de lay -->
         </div>
       </div>
 
@@ -170,7 +170,7 @@
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="{{ url('/login') }}">Đăng xuất</a></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->

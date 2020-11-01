@@ -9,8 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
-
+use Session;
 use DB;
+use Illuminate\Database\MySqlConnection;
 
 class LoginController extends Controller
 {
@@ -29,36 +30,39 @@ class LoginController extends Controller
 	//Ham xu ly dang nhap 
 	public function postLogin(Request $request)
     {
-    	$user = $request->user;
-    	$pass = $request->password;
 
-    	$teachers = DB::table('giangvien')->paginate(5);
-
-    	//Ham lay thong tin duoc gui ve va kiem tra
-        $arr = [
-            'user' => $user,
-            'password' => $pass,
+        // Kiểm tra dữ liệu nhập vào
+        $rules = [
+            'email' =>'required|email|max:255',
+            'password' => 'required|min:1'
         ];
-        if ($request->remember == trans('remember.Remember Me')) {
-            $remember = true;
-        } else {
-            $remember = false;
-        }
-        //kiểm tra trường remember có được chọn hay không
+        $messages = [
+            'email.required' => 'Email là trường bắt buộc',
+            'email.max' => 'Tên email không quá 255 ký tự',
+            'email.email' => 'Email không đúng định dạng',
+            'password.required' => 'Mật khẩu là trường bắt buộc',
+            'password.min' => 'Mật khẩu phải chứa ít nhất 1 ký tự',
+        ];
+        $validator = Validator::make($request->all(), $rules, $messages);
         
-        //Kiem tra 
-        if (Auth::guard('giangvien')->attempt($arr)) {
-          // return view('admin.home');
-        	
-        	return view('admin.home', ['giangvien' => $teachers]);
-
-        } 
-
-        //Trong truong hop that bai 
-        else {
-
-         	dd('Dang nhap that bai');
+        
+        if ($validator->fails()) {
+            // Điều kiện dữ liệu không hợp lệ sẽ chuyển về trang đăng nhập và thông báo lỗi
+            return redirect('login')->withErrors($validator)->withInput();
+        } else {
+            // Nếu dữ liệu hợp lệ sẽ kiểm tra trong csdl
+            $email = $request->input('email');
+            $password = $request->input('password');
      
+            if( Auth::guard('giangvien')->attempt(['email' => $email, 'password' =>$password])) {
+                $teacher_name = DB::giangvien()->where('id_teacher' , '0806');
+                // Kiểm tra đúng email và mật khẩu sẽ chuyển trang
+                return view('admin.home')->with($teacher_name );
+            } else {
+                // Kiểm tra không đúng sẽ hiển thị thông báo lỗi
+                Session::flash('error', 'Email hoặc mật khẩu không đúng!');
+                return redirect('login');
+            }
         }
     }
 
@@ -67,7 +71,7 @@ class LoginController extends Controller
     public function register() {
 
 
-    	return view('login.register');
+    	return view('admin.register');
     	// DB::table('giangvien')->insert([
     	// 	'teacher_name' => 'Đặng Tuấn Đạt',
     	// 	'id_teacher' => '0806' ,

@@ -14,47 +14,30 @@ use DB;
 
 class LoginController extends Controller
 {
-    //
-
+    //Ham de goi trang login trong thu muc admin
 	public function index() {
 		return view('admin.login');
 	}
 
+
+	//Ham de goi trang home trong thu muc admin
 	public function home() {
 		return view('admin.home');
 	}
 
-	public function postLogin2( Request $request) {
 
-		$user = $request->user;
-    	$pass = $request->password;
-
-
-
-		if( Auth::guard('giangvien')->attempt(['user' => $user , 'password' => $pass]) ) {
-			return view('admin.home');
-
-		}
-		else {
-
-			
-			dd('Dang nhap that bai');
-		}
-	}
-
-
+	//Ham xu ly dang nhap 
 	public function postLogin(Request $request)
     {
+    	$user = $request->user;
+    	$pass = $request->password;
 
-    	$username = $request->user;
-    	$password = $request->password;
+    	$teachers = DB::table('giangvien')->paginate(5);
 
-    	echo $username."<br>".$password;
-    	
-
+    	//Ham lay thong tin duoc gui ve va kiem tra
         $arr = [
-            'id_teacher' => $request->input('user'),
-            'password' => $request->input('password'),
+            'user' => $user,
+            'password' => $pass,
         ];
         if ($request->remember == trans('remember.Remember Me')) {
             $remember = true;
@@ -62,41 +45,43 @@ class LoginController extends Controller
             $remember = false;
         }
         //kiểm tra trường remember có được chọn hay không
-
-
         
-        // if (Auth::guard('giangvien')->attempt(['user' => $id , 'password' =>$password ])) {
-         if (Auth::guard('giangvien')->attempt($arr)) {
-           return view('admin.home');
+        //Kiem tra 
+        if (Auth::guard('giangvien')->attempt($arr)) {
+          // return view('admin.home');
+        	
+        	return view('admin.home', ['giangvien' => $teachers]);
 
-            
-            //..code tùy chọn
-            //đăng nhập thành công thì hiển thị thông báo đăng nhập thành công
-        } else {
+        } 
 
-         dd('Dang nhap that bai');
-            
-            //...code tùy chọn
-            //đăng nhập thất bại hiển thị đăng nhập thất bại
+        //Trong truong hop that bai 
+        else {
+
+         	dd('Dang nhap that bai');
+     
         }
     }
 
 
+    //Register
     public function register() {
-    	DB::table('giangvien')->insert([
-    		'teacher_name' => 'Đặng Tuấn Đạt',
-    		'id_teacher' => '0806' ,
-    		'phone_number' => '000000000' ,
-    		'permission' =>'0',
-    		'DoB' => '2001/01/01',
-    		'user' => 'dtd',
-    		'password' => bcrypt('0086'),
-    		'id_department' => 'MHT',
 
 
-    	]);
+    	return view('login.register');
+    	// DB::table('giangvien')->insert([
+    	// 	'teacher_name' => 'Đặng Tuấn Đạt',
+    	// 	'id_teacher' => '0806' ,
+    	// 	'phone_number' => '000000000' ,
+    	// 	'permission' =>'0',
+    	// 	'DoB' => '2001/01/01',
+    	// 	'user' => 'dtd',
+    	// 	'password' => bcrypt('0086'),
+    	// 	'id_department' => 'MHT',
 
-    	 echo "da them";
+
+    	// ]);
+
+    	//  echo "da them";
 
     }
 

@@ -21,19 +21,11 @@ use DB;
 |
 */
 
-Route::get('/home', 'App\Http\Controllers\LoginController@home');
+Route::post('/home', 'App\Http\Controllers\LoginController@home')->name('home');
 
-Route::get('/login', 'App\Http\Controllers\LoginController@index');
+Route::get('/login', 'App\Http\Controllers\LoginController@index')->name('login');
 
-
-
-
-
-
-
-Route::post('login/dangnhap', 'App\Http\Controllers\LoginController@postLogin2');
-
-
+Route::post('login/dangnhap', 'App\Http\Controllers\LoginController@postLogin')->name('loginAcc');
 
 Route::get('test',function() {
 	

@@ -55,5 +55,5 @@ Route::group(['middleware' => 'guest' ], function() {
 });
 
 Route::group(['middleware' => 'auth'] , function() {
-	Route::get('/home','App\Http\Controllers\LoginController@home');
+	Route::get('/home',['as' => '/home', 'uses' => 'App\Http\Controllers\LoginController@home']);
 });

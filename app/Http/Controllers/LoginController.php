@@ -20,12 +20,9 @@ class LoginController extends Controller
 		return view('admin.login');
 	}
 
-
-	//Ham de goi trang home trong thu muc admin
-	public function home() {
-		return view('admin.home');
-	}
-
+    public function home() {
+        return view('admin.home');
+    }
 
 	//Ham xu ly dang nhap 
 	public function postLogin(Request $request)
@@ -55,9 +52,9 @@ class LoginController extends Controller
             $password = $request->input('password');
      
             if( Auth::guard('giangvien')->attempt(['email' => $email, 'password' =>$password])) {
-                $teacher_name = DB::giangvien()->where('id_teacher' , '0806');
+                
                 // Kiểm tra đúng email và mật khẩu sẽ chuyển trang
-                return view('admin.home')->with($teacher_name );
+               dd(Auth::guard('giangvien'));
             } else {
                 // Kiểm tra không đúng sẽ hiển thị thông báo lỗi
                 Session::flash('error', 'Email hoặc mật khẩu không đúng!');

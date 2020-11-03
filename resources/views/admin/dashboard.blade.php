@@ -50,7 +50,7 @@
         </div>
         <div class="info">
           
-          <a href="#" class="d-block">{{  Auth::guard('giangvien')->teacher_name }}</a> <!-- su dung get user de lay -->
+          <a href="#" class="d-block">{{  Auth::guard('giangvien')->user()->teacher_name }}</a> <!-- su dung get user de lay -->
         </div>
       </div>
 

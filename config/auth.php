@@ -48,14 +48,14 @@ return [
         ],
 
 
-        'giangvien' => [
+        'teacher' => [
             'driver' => 'session',
-            'provider' => 'giangvien',
+            'provider' => 'teacher',
         ],
 
-        'giangvien-api' => [
+        'teacher-api' => [
             'driver' => 'token',
-            'provider' => 'giangvien',
+            'provider' => 'teacher',
             'hash' => false,
         ],
     ],
@@ -89,9 +89,9 @@ return [
         // ],
 
 
-        'giangvien' => [
+        'teacher' => [
             'driver' => 'eloquent',
-            'model' => App\Models\giangvien::class,
+            'model' => App\Models\teacher::class,
         ],
     ],
 
@@ -118,8 +118,8 @@ return [
             'throttle' => 60,
         ],
 
-         'giangvien' => [
-            'provider' => 'giangvien',
+         'teacher' => [
+            'provider' => 'teacher',
             'table' => 'password_resets',
             'expire' => 60,
             

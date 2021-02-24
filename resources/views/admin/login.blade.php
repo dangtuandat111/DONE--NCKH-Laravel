@@ -61,7 +61,7 @@
           </button>
         </div>
       @endif
-      <form  method="post" action = "{{ url('/login/dangnhap') }}">
+      <form  method="post" action = "{{ url('/login') }}">
         <input type = "hidden" name = "_token" value = "{{ csrf_token() }}">
         <div class="input-group mb-3">
           <input type="text" class="form-control" placeholder="Email " name = "email" required="">
@@ -98,12 +98,12 @@
       
       <!-- /.social-auth-links -->
 
-      <p class="mb-1">
-        <a href="#">Quên mật khẩu</a>
-      </p>
-      <p class="mb-0">
-        <a href="{{ url('/register') }}" class="text-center">Đăng ký thành viên</a>
-      </p>
+       <!--  <p class="mb-1">
+          <a href="#">Quên mật khẩu</a>
+        </p>
+        <p class="mb-0">
+          <a href="{{ url('/register') }}" class="text-center">Đăng ký thành viên</a>
+        </p> -->
     </div>
     <!-- /.login-card-body -->
   </div>

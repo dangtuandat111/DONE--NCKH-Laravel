@@ -11,15 +11,13 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Home</a>
+        <a href="{{ url('/home') }}" class="nav-link">Home</a>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Contact</a>
-      </li>
+      
     </ul>
 
     <!-- SEARCH FORM -->
-    <form class="form-inline ml-3">
+  <!--   <form class="form-inline ml-3">
       <div class="input-group input-group-sm">
         <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
         <div class="input-group-append">
@@ -28,7 +26,7 @@
           </button>
         </div>
       </div>
-    </form>
+    </form> -->
 
   </nav>
   <!-- /.navbar -->
@@ -36,7 +34,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="" class="brand-link">
+    <a href="{{ url('/home') }}" class="brand-link">
      
       <span class="brand-text font-weight-light">Hệ thống hỗ trợ giảng dạy</span>
     </a>
@@ -45,12 +43,10 @@
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="../AdminLTE-3.0.5/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-        </div>
-        <div class="info">
-          
-          <a href="#" class="d-block">{{  Auth::guard('giangvien')->user()->teacher_name }}</a> <!-- su dung get user de lay -->
+       
+        <div class="info " style = 'font-size: 20px'>
+          <a href="" class="d-block">{{ Auth::user()->name }}</a>
+        
         </div>
       </div>
 
@@ -72,23 +68,23 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link ">
+                <a href="  {{ url('/admin/hocphan/thongtin') }}" class="nav-link ">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Thông tin</p>
+                  <p>Thông tin học phần</p>
                 </a>
               </li>
 
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{ url('/admin/hocphan/them') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Thêm</p>
+                  <p>Thêm học phần</p>
                 </a>
               </li>
             </ul>
           </li>
 
           <!--Phan them Giang vien -->
-          <li class="nav-item has-treeview">
+          <li class="nav-item has-treeview ">
             <a href="#" class="nav-link active">
              <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
@@ -99,13 +95,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/layout/top-nav.html" class="nav-link">
+                <a href="{{ url('/admin/teacher/thongtin') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Thông tin về giảng viên </p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
+                <a href="{{ url('/admin/teacher/them') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Thêm giảng viên </p>
                 </a>
@@ -113,8 +109,94 @@
             </ul>
           </li>
 
+          <!--Phan them lop hoc phan -->
+          <li class="nav-item has-treeview ">
+            <a href="#" class="nav-link active">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Lớp học phần
+                <i class="right fas fa-angle-left"></i>
+                
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Thông tin lớp học phần</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <!--Phan lich giang day -->
+          <li class="nav-item has-treeview ">
+            <a href="#" class="nav-link active">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Lịch giảng dạy
+                <i class="right fas fa-angle-left"></i>
+                
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Thông tin giờ giảng</p>
+                </a>
+              </li>
+            </ul>
+             <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Thay đổi giờ giảng</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <!--Phan Import bang file Excel -->
+          <li class="nav-item has-treeview ">
+            <a href="" class="nav-link active">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Import 
+                <i class="right fas fa-angle-left"></i>
+                
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ url('/admin/import/teacher') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Thêm giảng viên</p>
+                </a>
+              </li>
+            </ul>
+
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ url('/admin/import/hocphan') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Thêm học phần</p>
+                </a>
+              </li>
+            </ul>
+
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="pages/layout/top-nav.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Thêm ???</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
           <!--Phan them Phong -->
-          <li class="nav-item has-treeview">
+          <li class="nav-item has-treeview ">
             <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
@@ -132,28 +214,7 @@
               </li>
             </ul>
           </li>
-
-          <!--Phan them lop hoc -->
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Lop hoc 
-                <i class="right fas fa-angle-left"></i>
-                
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/layout/top-nav.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Thông tin lop hoc</p>
-                </a>
-              </li>
-            </ul>
-          </li>
            
-      
       <!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->
@@ -166,11 +227,11 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Thông tin</h1>
+            <h1 class="m-0 text-dark">@yield('DeMuc')</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="{{ url('/login') }}">Đăng xuất</a></li>
+              <li class="breadcrumb-item"><a href="{{ url('/logout') }}">Đăng xuất</a></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -179,14 +240,6 @@
     <!-- /.content-header -->
 
   @yield('content')
-
-  <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong>
-    All rights reserved.
-    <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 3.0.5
-    </div>
-  </footer>
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">

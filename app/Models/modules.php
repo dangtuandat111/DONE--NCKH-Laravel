@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class modules extends Model
 {
     use HasFactory;
-     protected $table = "modules";
+     protected $table = "module";
+     public $timestamps = false;
+
+     public function getAll() {
+     	return DB::table('modules')->get();
+     }
 
 }

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class giangvien extends Authenticatable
+class teacher extends Authenticatable
 {
     use HasFactory, Notifiable;
 
@@ -19,17 +19,14 @@ class giangvien extends Authenticatable
      * @var array
      */
 
-    protected $table = "giangvien";
-
+    protected $table = "teacher";
+    public $timestamps = false;
+    
     protected $fillable = [
-        'teacher_name',
-        'id_teacher' ,
-        ' phone_number' ,
-        'permission' , 
-        'user',
-        'password',
-        'id_department',
-        'teacherRank'
+          
+        'Email_Teacher',
+        'Password_Teacher',
+      
     ];
 
     /**
@@ -38,8 +35,8 @@ class giangvien extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'Password_Teacher',
+        //'remember_token',
     ];
 
     /**

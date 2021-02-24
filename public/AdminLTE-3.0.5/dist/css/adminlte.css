@@ -1983,6 +1983,18 @@ pre code {
   background-color: rgba(255, 255, 255, 0.075);
 }
 
+/*@media (max-width: 460px) {
+  .table-responsive-sm {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .table-responsive-sm > .table-bordered {
+    border: 0;
+  }
+}*/
+
 @media (max-width: 575.98px) {
   .table-responsive-sm {
     display: block;

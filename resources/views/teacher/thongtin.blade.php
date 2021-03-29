@@ -30,8 +30,8 @@
              						<th>Tên tài khoản</th>
              						<th>Trình độ chuyên môn</th>
              						<th>Bộ môn</th>
-             						<th>Delete</th>
-             						<th>Edit</th>  
+             						<th>Xóa</th>
+             						<th>Sửa</th>  
              					</tr>
              				</thread>
                 <tbody>
@@ -43,8 +43,8 @@
                 			<td> {{$gv->User_Name_Teacher}}</td>
                 			<td> {{$gv->University_Teacher_Degree}}</td>
                 			<td> {{$gv->ID_Department}}</td>
-                			<td class = " center"><i class="fas fa-trash"></i><a href="../teacher/xoa/{{$gv->ID_Teacher}}" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a></td>
-                			<td class = " center"><i class="fas fa-eye"></i><a href = "../teacher/sua/{{$gv->ID_Teacher}}" >Edit</a></td>
+                			<td class = " center"><i class="fas fa-trash"></i><a href="../teacher/xoa/{{$gv->ID_Teacher}}" onclick="return confirm('Xác nhận xóa giảng viên này?');">Xóa</a></td>
+                			<td class = " center"><i class="fas fa-eye"></i><a href = "../teacher/sua/{{$gv->ID_Teacher}}" >Sửa</a></td>
                 		</tr>
                 	@endforeach
                 </tbody> 

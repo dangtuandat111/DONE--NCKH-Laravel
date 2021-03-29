@@ -1,3 +1,6 @@
+<?php 
+use Carbon\Carbon;
+?>
 @extends('admin.master')
 @section('body')
 
@@ -44,8 +47,8 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
        
-        <div class="info " style = 'font-size: 20px'>
-          <a href="" class="d-block">{{ Auth::user()->name }}</a>
+        <div class="info " style = 'font-size: 16px'> <!--20-->
+          <a href="{{ url('/home') }}" class="d-block">{{ Auth::user()->Account_Username }} - <?php $dt = Carbon::now(); echo $dt->toTimeString()?></a>
         
         </div>
       </div>
@@ -60,7 +63,7 @@
           <!-- Phan them hoc phan -->
           <li class="nav-item has-treeview menu-open">
             <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-copy"></i>
               <p>
                 Học phần
                 <i class="right fas fa-angle-left"></i>
@@ -73,20 +76,21 @@
                   <p>Thông tin học phần</p>
                 </a>
               </li>
-
-              <li class="nav-item">
+             @if(Auth::user()->Permission == 1)
+             <li class="nav-item">
                 <a href="{{ url('/admin/hocphan/them') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Thêm học phần</p>
                 </a>
               </li>
+              @endif
             </ul>
           </li>
 
           <!--Phan them Giang vien -->
           <li class="nav-item has-treeview ">
             <a href="#" class="nav-link active">
-             <i class="nav-icon fas fa-tachometer-alt"></i>
+           <i class="nav-icon fas fa-users-cog"></i>
               <p>
                 Giảng viên 
                 <i class="fas fa-angle-left right"></i>
@@ -112,7 +116,7 @@
           <!--Phan them lop hoc phan -->
           <li class="nav-item has-treeview ">
             <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-book"></i>
               <p>
                 Lớp học phần
                 <i class="right fas fa-angle-left"></i>
@@ -121,7 +125,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{ url('/admin/module_class/thongtin') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Thông tin lớp học phần</p>
                 </a>
@@ -132,7 +136,7 @@
           <!--Phan lich giang day -->
           <li class="nav-item has-treeview ">
             <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-calendar-alt"></i>
               <p>
                 Lịch giảng dạy
                 <i class="right fas fa-angle-left"></i>
@@ -141,7 +145,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{ url('/fullcalendar') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Thông tin giờ giảng</p>
                 </a>
@@ -156,11 +160,21 @@
               </li>
             </ul>
           </li>
-
+           <!--Phan phan giang -->
+          <li class="nav-item has-treeview ">
+            <a href="{{ url('/admin/assign') }}" class="nav-link active">
+              <i class="nav-icon fas fa-columns"></i>
+              <p>
+                Phân giảng
+                <i class="right fas fa-angle-left"></i>
+                
+              </p>
+            </a>
+          </li>
           <!--Phan Import bang file Excel -->
           <li class="nav-item has-treeview ">
             <a href="" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-upload"></i>
               <p>
                 Import 
                 <i class="right fas fa-angle-left"></i>
@@ -169,7 +183,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ url('/admin/import/teacher') }}" class="nav-link">
+                <a href="{{ url('/admin/import/giangvien') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Thêm giảng viên</p>
                 </a>
@@ -178,27 +192,39 @@
 
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ url('/admin/import/hocphan') }}" class="nav-link">
+                <a href="{{ url('/admin/import/lophocphan') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Thêm học phần</p>
+                  <p>Thêm lớp học phần</p>
                 </a>
               </li>
             </ul>
 
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/layout/top-nav.html" class="nav-link">
+                <a href="{{ url('/admin/import/phong') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Thêm ???</p>
+                  <p>Thêm phòng học</p>
+                </a>
+              </li>
+            </ul>
+          
+
+          <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ url('/admin/import/hocphan') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Thêm học phần</p>
                 </a>
               </li>
             </ul>
           </li>
 
+          </li>
           <!--Phan them Phong -->
           <li class="nav-item has-treeview ">
             <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-school"></i>
+              
               <p>
                 Phòng học 
                 <i class="right fas fa-angle-left"></i>
@@ -207,14 +233,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/layout/top-nav.html" class="nav-link">
+                <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Thông tin phòng học </p>
                 </a>
               </li>
             </ul>
           </li>
-           
       <!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->

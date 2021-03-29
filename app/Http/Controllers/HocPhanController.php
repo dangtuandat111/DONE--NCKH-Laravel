@@ -8,11 +8,13 @@ use Illuminate\Support\Facades\Auth;
 use Session;
 use DB;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Facades\Redirect;
 use App\models\modules;
+
 
 class HocPhanController extends Controller
 {
+	//Tra lai bang thong tin 
     public static function getThongTin() {
     	
 		$modules = DB::table('module')->Paginate(10);
@@ -20,13 +22,15 @@ class HocPhanController extends Controller
 		return view ('modules.thongtin', ['modules' => $modules] );
 	}
 
+	//Tra lai bang fix thong tin
 	public function fixThongTin($id) {
 		$modules = DB::table('module')->where('ID_Module','=', $id)->get();
 		$departments = DB::table('department')->get();
 		
-		return view ('modules.sua', ['modules' => $modules] , ['department' => $departments]);
+		return view('modules.sua')->with(['modules' => $modules])->with(['department' => $departments]);
 	}
 
+	//Tra lai bang them thong tin
 	public function addThongTin() {
 		$departments = DB::table('department')->get();
 		return view('modules.them', ['department' => $departments]);
@@ -60,23 +64,26 @@ class HocPhanController extends Controller
 	    $validator = Validator::make($request->all(), $rules, $messages);
 	    
 	    if($validator->fails()) {
-	    	 return back()->withErrors($validator);
+	    	 return back()->withInput()->withErrors($validator);
 	    }
 	    else {
 	    	$temp = DB::table('module')->where('ID_Module' , $request->inputID_module)->count() ;
 			if($temp >0 ) {
-				return back()->withErrors( 'Mã học phần đã tồn tại');
-
+				return back()->withInput()->withErrors( 'Mã học phần đã tồn tại');
 			}
 
-			if(!is_numeric( $request->inputSemester ) ) {
-
-				return back()->withErrors( 'Nhập lại kỳ học');
+			if(!is_numeric( $request->inputSemester ) or $request->inputSemester <1 or $request->inputSemester >8) {
+				return Redirect::to('admin/hocphan/them')->withInput()->withErrors( 'Nhập lại kỳ học');
+				//return back()->withInput()->withErrors( 'Nhập lại kỳ học');
 			}
-			else {
-				if ( $request->inputSemester !=1 and $request->inputSemester !=2) {
-					return back()->withErrors('Giá trị kỳ học sai');
-				}
+			if(!is_numeric( $request->inputTheory) ){
+				return back()->withInput()->withErrors( 'Nhập lại số tiết lý thuyết');
+			}
+			if(!is_numeric( $request->inputExercise) ){
+				return back()->withInput()->withErrors( 'Nhập lại số tiết bài tập');
+			}
+			if(!is_numeric( $request->inputPractice) ){
+				return back()->withInput()->withErrors( 'Nhập lại số tiết thực hành');
 			}
 	    }
 
@@ -100,26 +107,70 @@ class HocPhanController extends Controller
 
 	public function postFix(request $request){
 		
-		$id = $request->inputID_module;
+		$rules = [
+	 	'inputID_module' => 'required|max:25',
+        'inputSemester' =>'required|max:25',
+        'inputCredits' =>'required',
+        'inputModule_name' =>'required',
+        'inputTheory' =>'required',
+        'inputExercise' =>'required',
+        'inputPractice' =>'required',
+        'inputProject' =>'required',
+        'inputID_department' =>'required'
+    	];
 
-		$temp = DB::table('module')->where('ID_Module' , $request->inputID_module)->count() ;
-			if($temp >0 ) {
-				return back()->withErrors( 'Mã học phần đã tồn tại');
-
+    	$messages = [
+        'inputSemester.required' => 'Kì học là trường bắt buộc',
+        'inputID_module.required' => 'Mã học phần là trường bắt buộc',
+        'inputCredits.required' => 'Số tín chỉ là trường bắt buộc',
+        'inputModule_name.required' => 'Tên học phần là trường bắt buộc',
+        'inputTheory.required' => 'Số tiết lý thuyểt là trường bắt buộc',
+        'inputExercise.required' => 'Số tiết bài tập là trường bắt buộc',
+        'inputPractice.required' => 'Số tiết thực hành là trường bắt buộc',
+        'inputProject.required' => 'Số tiết bài tập lớn là trường bắt buộc',
+        'inputID_department.required' => 'Bộ môn là trường bắt buộc'
+    	];
+	    $validator = Validator::make($request->all(), $rules, $messages);
+	    
+	    if($validator->fails()) {
+	    	 return back()->withInput()->withErrors($validator);
+	    }
+	    else {
+	    	$temp = DB::table('module')->where('ID_Module' , $request->inputID_module)->count() ;
+			if($temp >1 ) {
+				return back()->withInput()->withErrors( 'Mã học phần đã tồn tại');
 			}
-		DB::table('module')->where('id_module', $id)->update(
-			['semester' => $request->inputSemester,
-			'credit' => $request->inputCredits,
-			'module_name' => $request->inputModule_name,
-			'theory' => $request->inputTheory,
-			'exercise' => $request->inputExercise,
-			'practice' => $request->inputPractice,
-			'project' => $request->inputProject,
-			'id_department' => $request->inputID_department]
 
-		);
+			if(!is_numeric( $request->inputSemester ) or $request->inputSemester <1 or $request->inputSemester >8) {
+				return Redirect::to('admin/hocphan/them')->withInput()->withErrors( 'Nhập lại kỳ học');
+				//return back()->withInput()->withErrors( 'Nhập lại kỳ học');
+			}
+			if(!is_numeric( $request->inputTheory) ){
+				return back()->withInput()->withErrors( 'Nhập lại số tiết lý thuyết');
+			}
+			if(!is_numeric( $request->inputExercise) ){
+				return back()->withInput()->withErrors( 'Nhập lại số tiết bài tập');
+			}
+			if(!is_numeric( $request->inputPractice) ){
+				return back()->withInput()->withErrors( 'Nhập lại số tiết thực hành');
+			}
+	    }
+	    try {
+	    	DB::table('module')->where('id_module', $id)->update(
+				['semester' => $request->inputSemester,
+				'credit' => $request->inputCredits,
+				'module_name' => $request->inputModule_name,
+				'theory' => $request->inputTheory,
+				'exercise' => $request->inputExercise,
+				'practice' => $request->inputPractice,
+				'project' => $request->inputProject,
+				'id_department' => $request->inputID_department]
 
-
+			);
+	    }catch(QueryException $e) {
+	    	return redirect('admin/hocphan/thongtin')->withErrors($e->getMessage());
+	    }
+		
 		return redirect('admin/hocphan/thongtin')->with('thongbao', 'Sửa thành công');
 	}
 

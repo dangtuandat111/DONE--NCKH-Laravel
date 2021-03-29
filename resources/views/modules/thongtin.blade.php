@@ -1,6 +1,10 @@
 @section('DeMuc', 'Học Phần')
 @section('title', 'Học Phần')
 
+@section('link')
+
+@endsection
+
 @extends('admin.dashboard')
 @section('content')
 
@@ -31,8 +35,8 @@
    						<th>Số tiết thực hành</th>
    						<th>Số tiết bài tập lớn</th>
    						<th>Bộ môn</th>
-   						<th>Delete</th>
-   						<th>Edit</th>
+   						<th>Xóa</th>
+   						<th>Sửa</th>
    					</tr>
    				</thread>
                 <tbody>
@@ -45,8 +49,8 @@
                 			<td> {{$hp->Practice}}</td>
                 			<td> {{$hp->Project}}</td>
                 			<td> {{$hp->ID_Department}}</td>
-                			<td class = " center"><i class="fas fa-trash"></i><a href="../hocphan/xoa/{{$hp->ID_Module}}">Delete</a></td>
-                			<td class = " center"><i class="fas fa-eye"></i><a href = "../hocphan/sua/{{$hp->ID_Module}}">Edit</a></td>
+                			<td class = " center"><i class="fas fa-trash"></i><a href="../hocphan/xoa/{{$hp->ID_Module}}" onclick="return confirm('Xác nhận xóa học phần này?');">Xóa</a></td>
+                			<td class = " center"><i class="fas fa-eye"></i><a href = "../hocphan/sua/{{$hp->ID_Module}}">Sửa</a></td>
                 		</tr>
                 	@endforeach
                 </tbody> 
@@ -69,7 +73,9 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-
+@section('scripts')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+@endsection
+
 @stop()

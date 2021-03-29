@@ -52,13 +52,40 @@ Route::group(['middleware' => 'auth' ], function() {
 		});
 
 		Route::group(['prefix' => 'import'], function(){
+			Route::get('lophocphan', 'App\Http\Controllers\importController@getModules_Class');
+			Route::post('lophocphan',  'App\Http\Controllers\importController@postModules_Class');
+			Route::get('giangvien', 'App\Http\Controllers\importController@getTeachers');
+			Route::post('giangvien',  'App\Http\Controllers\importController@postTeachers');
+			Route::get('phong', 'App\Http\Controllers\importController@getRoom');
+			Route::post('phong',  'App\Http\Controllers\importController@postRoom');
 			Route::get('hocphan', 'App\Http\Controllers\importController@getModules');
 			Route::post('hocphan',  'App\Http\Controllers\importController@postModules');
 		});
 
+		Route::group(['prefix' => 'export'], function() {
+			Route::post('giangvien',  'App\Http\Controllers\ExportController@postTeacher' );
+			Route::post('phong',  'App\Http\Controllers\ExportController@postRoom' );
+			Route::post('hocphan',  'App\Http\Controllers\ExportController@postModules' );
+		});
+
+		Route::group(['prefix' => 'module_class'],function()  {
+			Route::get('thongtin','App\Http\Controllers\Module_classController@getThongTin');
+
+		});
+		Route::get('assign','App\Http\Controllers\AssignController@index');
+		Route::post('submit', 'App\Http\Controllers\AssignController@submit');
+
 	});
-	
-	Route::get('/home', 'App\Http\Controllers\LoginController@home');
+
+
+
+	Route::get('fullcalendar','App\Http\Controllers\ScheduleController@index');
+	Route::get('fullcalendar/create','App\Http\Controllers\ScheduleController@create');
+	Route::post('fullcalendar/update','App\Http\Controllers\ScheduleController@update');
+	Route::post('fullcalendar/delete','App\Http\Controllers\ScheduleController@destroy');
+
+
+	Route::get('/home', ['as' => '/home' , 'uses' => 'App\Http\Controllers\LoginController@home']);
 	Route::get('/logout', 'App\Http\Controllers\LoginController@Logout');
 
 });

@@ -82,16 +82,12 @@
 	                <select class="form-control custom-select" name = "inputID_department" >
 	                  <option selected disabled >Chọn bộ môn</option>
 		                	@foreach($department as $dp)
-		                		@if($dp->ID_Department == $bm->ID_Department)
-                					<option value="{{$dp->ID_Department}}" selected >{{$dp->Department_Name}}</option>
-                				else <option value="{{$dp->ID_Department}}" >{{$dp->Department_Name}}</option>
-                				@endif
+		                		<option value="{{$dp->ID_Department}}" >{{$dp->Department_Name}}
 
 		                	@endforeach
 	                </select>
 	              </div>
-	       
-	        	     @endforeach
+	      
 					
 	              <div class="row">
 			        <div class="col-12">

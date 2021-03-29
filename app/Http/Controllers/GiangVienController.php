@@ -10,6 +10,7 @@ use DB;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use App\models\teacher;
+use App\models\User;
 use Illuminate\Support\Facades\Hash;
 
 class GiangVienController extends Controller
@@ -39,13 +40,14 @@ class GiangVienController extends Controller
     	$rules = [
     		'inputTeacher_name' => 'required|max:50',
             'inputID_Teacher' => 'required',
-    		'inputPhone_number' => 'required|max:10',
+    		'inputPhone_number' => ['required' , 'max:10'],
     		'inputPermission' => 'required',
     		'inputEmail_Teacher' => 'required|email',
     		'inputUser_Name_Teacher' => 'required|max:50',
     		'inputPassword_Teacher' => 'required',
-    		'inputDoB_Teacher' => 'required',
-    		'inputID_Department' => 'required'
+    		'inputDoB_Teacher' => 'required|date_format:m-d-Y',
+    		'inputID_Department' => 'required',
+            'phone' => 'required|regex:/(01)[0-9]{9}/'
     	];
 
     	$messages = [
@@ -60,30 +62,37 @@ class GiangVienController extends Controller
     		'inputID_Department.required' => 'Bộ môn là bắt buộc',
 
     		'inputTeacher_name.max' => 'Tên giảng viên tối đa 50 kí tự',
-    		'inputPhone_number.max' => 'Số điện thoại chưa đúng format',
+            'inputPhone_number.regex' => 'Số điện thoại không đúng',
+    		'inputPhone_number.max' => 'Số điện thoại tối đa 10 số',
     		'inputEmail.email' => 'Địa chỉ email không đúng',
     		'inputUser.max' => 'Tên người dùng tối đa 50 kí tự',
     		'inputPassword.max' => 'Mật khẩu có độ dài không quá 200 kí tự',
-    		
+    		'inputDoB_Teacher.date_format' => 'Định dạng ngày tháng không đúng'
     		
     	];
 
     	$validator = Validator::make($request->all(), $rules, $messages);
 	    
 	    if($validator->fails()) {
-	    	 return back()->withErrors($validator);
+	    	 return back()->withInput()->withErrors($validator);
 	    }
-	    else {
-	    	if($request->inputPermission == "Admin") {
-                $request->inputPermission = 1;
-            }
-            else if ($request->inputPermission == "Phòng đào tạo") {
-                $request->inputPermission =2;
-            }
-            else $request->inputPermission = 0;
+       $temp = DB::table('teacher')->where('ID_Teacher' , $request->inputID_Teacher)->count() ;
+        if($temp >0 ) {
+            return back()->withInput()->withErrors( 'Mã giảng viên đã tồn tại');
+        }
 
-			
-	    }
+        if($request->inputPermission == "Admin") {
+            $request->inputPermission = 1;
+        }
+        else if ($request->inputPermission == "Phòng đào tạo") {
+            $request->inputPermission =2;
+        }
+        else if ($request->inputPermission == "Giảng viên" ) {   
+            $request->inputPermission = 0;
+        }
+        else {
+             return back()->withInput()->withErrors('Chọn lại phân quyền');
+        }
 
 	    $gv = new teacher();
 	    $gv->ID_Teacher = $request->inputID_Teacher;
@@ -95,13 +104,13 @@ class GiangVienController extends Controller
 	    $gv->Password_Teacher = bcrypt($request->inputPassword);
 	    $gv->University_Teacher_Degree = $request->inputTeacher_Rank;
 	    
-	   //   ($request->inputDoB)->format('Y-m-d');
-	   // // $gv->DoB = date_format($request->inputDoB,"Y/m/d");
 	    $data = Carbon::createFromFormat('Y-m-d', $request->inputDoB_Teacher)->format('Y-m-d');
 	    $gv->DoB_Teacher = $data;
 	    $gv->ID_Department  = $request->inputID_Department;
 
 	    $gv->save();
+        if( !$this->userSave($request) ) return back()->withInput()->withErrors('Lỗi SQL');
+       
 
 	    return redirect('admin/teacher/thongtin')->with('thongbao', 'Thêm giảng viên thành công');
     }
@@ -184,6 +193,17 @@ class GiangVienController extends Controller
         return redirect('admin/teacher/thongtin')->with('thongbao', 'Xóa giảng viên thành công');
     }
 
-
+    public function userSave($request) {
+        try {
+             DB::table('users')->insert([
+                'name' => $request->inputName_Teacher,
+                'email' => $request->inputUser_Name_Teacher,
+                'password' => bcrypt($request->Password_Teacher),
+            ]);
+         }catch(QueryException $e) {
+             return false;
+         }
+        return true;
+    }
 
 }

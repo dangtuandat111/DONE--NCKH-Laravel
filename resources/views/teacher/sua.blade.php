@@ -88,13 +88,10 @@
 	                <select class="form-control custom-select" name = "inputID_Department" >
 	                  <option selected disabled >Chọn bộ môn</option>
 		                	@foreach($department as $dp)
-		                		@if($dp->ID_Department == $gv->ID_Department) {
-                					<option value="{{$dp->ID_Department}}" selected >{{$gv->ID_Department}}</option>
-		                		}
-                				else { <option value="{{$dp->ID_Department}}" >{{$dp->ID_Department}}</option> }
-                				@endif
+		                		<option value="{{$dp->ID_Department}}" >{{$dp->Department_Name}}</option>
 
 		                	@endforeach
+
 	                </select>
 	              </div>
 	       
@@ -102,7 +99,7 @@
 					
 	              <div class="row">
 			        <div class="col-12">
-			          <a href="{{ url('/admin/hocphan/thongtin') }}" class="btn btn-secondary">Hủy</a>
+			          <a href="{{ url('/admin/teacher/thongtin') }}" class="btn btn-secondary">Hủy</a>
 			          <input type="submit" value="Sửa" class="btn btn-success float-right">
 			        </div>
 			      </div>

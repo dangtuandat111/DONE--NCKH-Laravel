@@ -13,7 +13,7 @@ use Session;
 use DB;
 use Illuminate\Database\MySqlConnection;
 use Illuminate\Support\Facades\Hash;
-
+use Carbon\Carbon;
 class LoginController extends Controller
 {
     //Ham de goi trang login trong thu muc admin
@@ -40,9 +40,9 @@ class LoginController extends Controller
                 return redirect('login')->withErrors($validator)->withInput();
             } else {
 
-                if (Auth::attempt(['email' => $request->input("email"), 'password' => $request->input("password")])) {
-
-                    return Redirect::to('/home');
+                if (Auth::attempt(['Account_Email' => $request->input("email"), 'password' => $request->input("password")])) {
+                    
+                    return redirect('/home');
                   
                 } else {
                     

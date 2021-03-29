@@ -34,42 +34,42 @@
               	<input type = "hidden"  name = "_token" value = "{{csrf_token()}}" />
 	              <div class="form-group">
 	                <label for="inputID_module">Mã học phần</label>
-	                <input type="text" name="inputID_module" class="form-control" placeholder="Nhập vào mã học phần" >
+	                <input type="text" name="inputID_module" class="form-control" placeholder="Nhập vào mã học phần" value = "{{old('inputID_module')}}" >
 	              </div>
 
 	              <div class="form-group">
 	                <label for="inputName">Kỳ học</label>
-	                <input type="number" name="inputSemester" class="form-control" placeholder="Kỳ học">
+	                <input type="number" name="inputSemester" class="form-control" placeholder="Kỳ học" value = "{{old('inputSemester')}}">
 	              </div>
 
 	              <div class="form-group">
 	                <label for="inputName">Số tín chỉ</label>
-	                <input type="number" name="inputCredits" class="form-control" placeholder="Số tín chỉ">
+	                <input type="number" name="inputCredits" class="form-control" placeholder="Số tín chỉ" value = "{{old('inputCredits')}}">
 	              </div>
 
 	              <div class="form-group">
 	                <label for="inputName">Tên học phần</label>
-	                <input type="text" name="inputModule_name" class="form-control" placeholder="Tên học phần">
+	                <input type="text" name="inputModule_name" class="form-control" placeholder="Tên học phần" value = "{{old('inputModule_name')}}">
 	              </div>
 
 	              <div class="form-group">
 	                <label for="inputName">Số tiết lý thuyết</label>
-	                <input type="number" name="inputTheory" class="form-control" placeholder="Lý thuyết">
+	                <input type="number" name="inputTheory" class="form-control" placeholder="Lý thuyết" value = "{{old('inputTheory')}}">
 	              </div>
 
 	              <div class="form-group">
 	                <label for="inputName">Số tiết bài tập</label>
-	                <input type="number" name="inputExercise" class="form-control" placeholder="Bài tập">
+	                <input type="number" name="inputExercise" class="form-control" placeholder="Bài tập" value = "{{old('inputExercise')}}">
 	              </div>
 
 	              <div class="form-group">
 	                <label for="inputName">Số tiết thực hành</label>
-	                <input type="number" name="inputPractice" class="form-control" placeholder="Thực hành">
+	                <input type="number" name="inputPractice" class="form-control" placeholder="Thực hành" value = "{{old('inputPractice')}}">
 	              </div>
 
 	              <div class="form-group">
 	                <label for="inputName">Số tiết bài tập lớn</label>
-	                <input type="number" name="inputProject" class="form-control" placeholder="Bài tập lớn">
+	                <input type="number" name="inputProject" class="form-control" placeholder="Bài tập lớn" value = "{{old('inputProject')}}">
 	              </div>
 
 	              <div class="form-group">

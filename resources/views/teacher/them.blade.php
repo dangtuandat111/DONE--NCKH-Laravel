@@ -35,17 +35,17 @@
 
               	<div class="form-group">
 	                <label for="inputID_Teacher">Mã giảng viên</label>
-	                <input type="text" name="inputID_Teacher" class="form-control" placeholder="Nhập vào mã giảng viên">
+	                <input type="text" name="inputID_Teacher" class="form-control" placeholder="Nhập vào mã giảng viên" value = "{{old('inputID_Teacher')}}">
 	            </div>
 
 	            <div class="form-group">
 	                <label for="inputTeacher_name">Tên giảng viên</label>
-	                <input type="text" name="inputTeacher_name" class="form-control" placeholder="Nhập vào tên giảng viên" >
+	                <input type="text" name="inputTeacher_name" class="form-control" placeholder="Nhập vào tên giảng viên" value = "{{old('inputTeacher_name')}}">
 	            </div>
 
 	            <div class="form-group">
 	                <label for="inputPhone_number">Số điện thoại</label>
-	                <input type="text" name="inputPhone_number" class="form-control" placeholder="Nhập vào số điện thoại">
+	                <input type="text" name="inputPhone_number" class="form-control" placeholder="Nhập vào số điện thoại" value = "{{old('inputPhone_number')}}">
 	            </div>
 
 	            <div class="form-group">
@@ -60,27 +60,27 @@
 
 	            <div class="form-group">
 	                <label for="inputEmail_Teacher">Địa chỉ email</label>
-	                <input type="email" name="inputEmail_Teacher" class="form-control" placeholder="Nhập vào địa chỉ email">
+	                <input type="email" name="inputEmail_Teacher" class="form-control" placeholder="Nhập vào địa chỉ email" value = "{{old('inputEmail_Teacher')}}">
 	            </div>
 
 	            <div class="form-group">
 	                <label for="inputUser_Name_Teacher">Tài khoản</label>
-	                <input type="text" name="inputUser_Name_Teacher" class="form-control" placeholder="Nhập vào tên người dùng">
+	                <input type="text" name="inputUser_Name_Teacher" class="form-control" placeholder="Nhập vào tên người dùng" value = "{{old('inputUser_Name_Teacher')}}">
 	            </div>
 
 	            <div class="form-group">
 	                <label for="inputPassword_Teacher">Mật khẩu</label>
-	                <input type="password" name="inputPassword_Teacher" class="form-control" placeholder="Nhập mật khẩu">
+	                <input type="password" name="inputPassword_Teacher" class="form-control" placeholder="Nhập mật khẩu" value = "{{old('inputPassword_Teacher')}}"> 
 	            </div>
 
 	            <div class="form-group">
 	                <label for="inputDoB_Teacher">Ngày sinh</label>
-	                <input type="date" name="inputDoB_Teacher" class="form-control" placeholder="Nhập ngày sinh">
+	                <input type="date" name="inputDoB_Teacher" class="form-control" placeholder="Nhập ngày sinh" value = "{{old('inputDoB_Teacher')}}">
 	            </div>
 
 	            <div class="form-group">
 	                <label for="inputTeacher_Rank">Học vị</label>
-	                <select class="form-control custom-select" name = "inputTeacher_Rank">
+	                <select class="form-control custom-select" name = "inputTeacher_Rank" value = "{{old('inputTeacher_Rank')}}">
 	                  <option selected disabled>Chọn học vị</option>
 		                	
                 				<option value="Thạc sĩ">Thạc sĩ</option>
@@ -92,7 +92,7 @@
 
 	            <div class="form-group">
 	                <label for="inputID_Department">Bộ môn</label>
-	                <select class="form-control custom-select" name = "inputID_Department">
+	                <select class="form-control custom-select" name = "inputID_Department" value = "{{old('inputID_Department')}}">
 	                  <option selected disabled>Chọn bộ môn</option>
 		                	@foreach($department as $bm)
 		                	

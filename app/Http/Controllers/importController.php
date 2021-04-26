@@ -12,6 +12,7 @@ use Maatwebsite\Excel\Concerns\ToModel;
 //use Excel;
 use App\Imports\ScheduleImport;
 use App\Imports\UserImport;
+use App\Imports\teacherImport;
 use Validator;
 
 use Excel;
@@ -37,7 +38,7 @@ class importController extends Controller
     }
 
     public function postTeachers(Request $request) {
-            $import = new ScheduleImport();
+            $import = new teacherImport();
             
             $rules = [
                 'giangvien' =>'required|max:5000|mimes:xlsx,xls,csv',
@@ -62,7 +63,7 @@ class importController extends Controller
                return Redirect('admin/import/giangvien')->withErrors($ex->getMessage());
             }
             // return Redirect('admin/import/giangvien')->withErrors("Lỗi");
-            return back()->with('thongbao',' Them thanh cong');
+            //return back()->with('thongbao',' Them thanh cong');
            
     }
 
@@ -91,11 +92,11 @@ class importController extends Controller
         try {
            
             Excel::import($import,$request->lophocphan);
+            
         }catch(Exception $ex) {
            return Redirect('admin/import/lophocphan')->withErrors($ex->getMessage());
         }
-        
-   	    return back()->with('thongbao',' Them thanh cong');
-
+         return back()->with('thongbao',' Them thanh cong');
+   	   
     }
 }

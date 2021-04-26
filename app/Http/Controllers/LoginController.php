@@ -40,7 +40,7 @@ class LoginController extends Controller
                 return redirect('login')->withErrors($validator)->withInput();
             } else {
 
-                if (Auth::attempt(['Account_Email' => $request->input("email"), 'password' => $request->input("password")])) {
+                if (Auth::attempt(['email' => $request->input("email"), 'password' => $request->input("password")])) {
                     
                     return redirect('/home');
                   

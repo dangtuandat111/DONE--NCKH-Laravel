@@ -48,7 +48,7 @@ use Carbon\Carbon;
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
        
         <div class="info " style = 'font-size: 16px'> <!--20-->
-          <a href="{{ url('/home') }}" class="d-block">{{ Auth::user()->Account_Username }} - <?php $dt = Carbon::now(); echo $dt->toTimeString()?></a>
+          <a href="{{ url('/home') }}" class="d-block">{{ Auth::user()->username }} - <?php $dt = Carbon::now(); echo $dt->toTimeString()?></a>
         
         </div>
       </div>
@@ -61,7 +61,7 @@ use Carbon\Carbon;
                with font-awesome or any other icon font library -->
 
           <!-- Phan them hoc phan -->
-          <li class="nav-item has-treeview menu-open">
+          <li class="nav-item has-treeview">
             <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-copy"></i>
               <p>
@@ -76,7 +76,7 @@ use Carbon\Carbon;
                   <p>Thông tin học phần</p>
                 </a>
               </li>
-             @if(Auth::user()->Permission == 1)
+             @if(Auth::user()->permission == 4)
              <li class="nav-item">
                 <a href="{{ url('/admin/hocphan/them') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -104,12 +104,14 @@ use Carbon\Carbon;
                   <p>Thông tin về giảng viên </p>
                 </a>
               </li>
+              @if(Auth::user()->permission == 4)
               <li class="nav-item">
                 <a href="{{ url('/admin/teacher/them') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Thêm giảng viên </p>
                 </a>
               </li>
+              @endif
             </ul>
           </li>
 
@@ -145,24 +147,60 @@ use Carbon\Carbon;
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
+                <a href="{{ url('/calendar') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Lịch giảng</p>
+                </a>
+              </li>
+            </ul>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ url('/admin/fix/thongtin') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Thay đổi giờ giảng</p>
+                </a>
+              </li>
+              
+            </ul>
+            <ul class="nav nav-treeview"><hr style = " border-top: 1px solid grey; width: 80%; margin-left:20px"></ul>
+            
+            @if(Auth::user()->permission == 4)
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
                 <a href="{{ url('/fullcalendar') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Thông tin giờ giảng</p>
                 </a>
               </li>
             </ul>
-             <ul class="nav nav-treeview">
+            @endif
+            
+            @if(Auth::user()->permission == 4)
+            <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Thay đổi giờ giảng</p>
+                  <i class="far fa-circle nav-icon" ></i>
+                  <p>Yêu cầu thay đổi</p>
+                </a>
+              </li>
+
+            </ul>
+            <ul class="nav nav-treeview"><hr style = " border-top: 1px solid grey; width: 80%; margin-left:20px"></ul>
+            @endif
+            @if(Auth::user()->permission == 4) <!--Ve sau sua lai thanh phong ban -->
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon" style = "font: 5px;"></i>
+                  <p style = "font-size: 8px;">Phân phòng (Sửa thành permission phòng ban) </p>
                 </a>
               </li>
             </ul>
+            @endif
           </li>
            <!--Phan phan giang -->
           <li class="nav-item has-treeview ">
-            <a href="{{ url('/admin/assign') }}" class="nav-link active">
+            <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-columns"></i>
               <p>
                 Phân giảng
@@ -170,6 +208,23 @@ use Carbon\Carbon;
                 
               </p>
             </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ url('/admin/assign/thongtin') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Lớp phân giảng</p>
+                </a>
+              </li>
+            </ul>
+            <!--Xoa lop da phan giang-->
+             <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ url('/admin/assign/list') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Danh sách phân giảng</p>
+                </a>
+              </li>
+            </ul>
           </li>
           <!--Phan Import bang file Excel -->
           <li class="nav-item has-treeview ">
@@ -195,25 +250,6 @@ use Carbon\Carbon;
                 <a href="{{ url('/admin/import/lophocphan') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Thêm lớp học phần</p>
-                </a>
-              </li>
-            </ul>
-
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{ url('/admin/import/phong') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Thêm phòng học</p>
-                </a>
-              </li>
-            </ul>
-          
-
-          <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{ url('/admin/import/hocphan') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Thêm học phần</p>
                 </a>
               </li>
             </ul>

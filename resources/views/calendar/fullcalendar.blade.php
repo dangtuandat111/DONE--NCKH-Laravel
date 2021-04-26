@@ -52,7 +52,7 @@
 
         var calendar = $('#calendar').fullCalendar({
             editable: true,
-            events: SITEURL + "/calendar",
+            events: SITEURL + "/fullcalendar",
             displayEventTime: true,
             
             editable: true,

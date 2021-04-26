@@ -9,20 +9,25 @@ use Session;
 use DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
 use App\models\modules;
 
 
 class HocPhanController extends Controller
 {
-	//Tra lai bang thong tin 
+	//Get module data
     public static function getThongTin() {
     	
 		$modules = DB::table('module')->Paginate(10);
+		$credits = DB::select(DB::raw("SELECT DISTINCT Credit FROM module ORDER BY Credit asc"));
+		$departments = DB::select(DB::raw("SELECT ID_Department,Department_Name FROM department"));
+		$module = DB::select(DB::raw("SELECT DISTINCT ID_Module,Module_Name FROM module "));
 
-		return view ('modules.thongtin', ['modules' => $modules] );
+		return view ('modules.thongtin', ['modules' => $modules,'credits' => $credits,
+											'module' => $module,'departments' => $departments] );
 	}
 
-	//Tra lai bang fix thong tin
+	//Get fix data with varible id = ID_Module
 	public function fixThongTin($id) {
 		$modules = DB::table('module')->where('ID_Module','=', $id)->get();
 		$departments = DB::table('department')->get();
@@ -30,14 +35,16 @@ class HocPhanController extends Controller
 		return view('modules.sua')->with(['modules' => $modules])->with(['department' => $departments]);
 	}
 
-	//Tra lai bang them thong tin
+	//Get add data
 	public function addThongTin() {
 		$departments = DB::table('department')->get();
 		return view('modules.them', ['department' => $departments]);
 	}
 
+	//Post add data
 	public function postAdd(Request $request) {
-
+		//Check rules and send messages
+		//Required
 		$rules = [
 	 	'inputID_module' => 'required|max:25',
         'inputSemester' =>'required|max:25',
@@ -67,9 +74,10 @@ class HocPhanController extends Controller
 	    	 return back()->withInput()->withErrors($validator);
 	    }
 	    else {
+	    	//Handle check
 	    	$temp = DB::table('module')->where('ID_Module' , $request->inputID_module)->count() ;
 			if($temp >0 ) {
-				return back()->withInput()->withErrors( 'Mã học phần đã tồn tại');
+				return back()->withInput()->withErrors('Mã học phần đã tồn tại');
 			}
 
 			if(!is_numeric( $request->inputSemester ) or $request->inputSemester <1 or $request->inputSemester >8) {
@@ -87,6 +95,7 @@ class HocPhanController extends Controller
 			}
 	    }
 
+	    //Create new module
 		$bm = new modules;
 		$bm->ID_Module = $request->inputID_module;
 		$bm->Semester = $request->inputSemester;
@@ -97,14 +106,11 @@ class HocPhanController extends Controller
 		$bm->Practice = $request->inputPractice;
 		$bm->Project = $request->inputProject;
 		$bm->ID_Department  = $request->inputID_department;
-
 		$bm->save();
-
 		return redirect('admin/hocphan/thongtin')->with('thongbao', 'Thêm thành công');
-		
 	}
 
-
+	//Post fix data
 	public function postFix(request $request){
 		
 		$rules = [
@@ -155,6 +161,7 @@ class HocPhanController extends Controller
 				return back()->withInput()->withErrors( 'Nhập lại số tiết thực hành');
 			}
 	    }
+
 	    try {
 	    	DB::table('module')->where('id_module', $id)->update(
 				['semester' => $request->inputSemester,
@@ -174,10 +181,30 @@ class HocPhanController extends Controller
 		return redirect('admin/hocphan/thongtin')->with('thongbao', 'Sửa thành công');
 	}
 
+	//XDelete data
 	public function deleteThongTin($id) {
 		DB::table('module')->where('ID_Module' , $id)->delete();
-
 		return redirect('admin/hocphan/thongtin')->with('thongbao', 'Xóa học phần thành công');
+	}
+
+	//Filter ajax
+	public function getFilter(Request $request) {
+		if(request()->ajax()) {
+
+	        $md = (!empty($_GET["md"])) ? ($_GET["md"]) : ('');
+	        $dp = (!empty($_GET["dp"])) ? ($_GET["dp"]) : ('');
+	        $cd = (!empty($_GET["cd"])) ? ($_GET["cd"]) : ('');
+
+        	$data = DB::table('module')->when($md,function($query,$md) {
+        		return $query->where('ID_Module',$md);
+        	})->when($cd,function($query,$cd) {
+        		return $query->where('Credit',$cd);
+        	})->when($dp,function($query,$dp) {
+        		return $query->where('ID_Department',$dp);
+        	})->get();
+			
+			return Response::json($data);
+		}
 	}
 
 }

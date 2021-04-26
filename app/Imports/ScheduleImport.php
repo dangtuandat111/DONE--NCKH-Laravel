@@ -38,11 +38,8 @@ class ScheduleImport implements ToCollection
     private $N = 26;
 
     public $kind = 1;
-   
-
     public function collection(Collection $collection)
     {
-        
     	$i = 0;
     	$e = 0;
     	foreach($collection as $row) {
@@ -191,12 +188,15 @@ class ScheduleImport implements ToCollection
         $dateBegin = $startTime->addDays($ngay-2);
         $dateEnd = $endTime;
 
-
-    	$tenmon = explode("-",$tenhp)[0];
-    	$kihoc = explode("-",$tenhp)[1];
-    	$nam = explode("-",$tenhp)[2];
-    	$kieukt = explode(" ",$nam)[1];
-    	$nam = explode(" ",$nam)[0];
+        try{
+            $tenmon = explode("-",$tenhp)[0];
+            $kihoc = explode("-",$tenhp)[1];
+            $nam = explode("-",$tenhp)[2];
+            $kieukt = explode(" ",$nam)[1];
+            $nam = explode(" ",$nam)[0];
+        }catch(Exception $e) {
+            return back()->withErrors('Lỗi tên học phần');
+        }
 
         $ID_Module_Class = $mahp."-".$kihoc."-".$nam." ".$kieukt;
         $ID_Module_Class_2 = $ID_Module_Class;
@@ -234,19 +234,22 @@ class ScheduleImport implements ToCollection
 			);
         }
         else {
-        	DB::table('module_class')->insert(
-				 [	'ID_Module_Class' => $ID_Module_Class,
-				 	'Module_Class_Name' => $Module_Class_Name,
-				 	'Number_Plan' => $Number_Plan,
-				 	'Number_Reality' => $Number_Reality,
-				 	'School_Year' => $School_Year,
-				 	'ID_Module' => $ID_Module,
-				 	'ID_Teacher' => NULL ]
-			);
+            try {
+                DB::table('module_class')->insert(
+                [  'ID_Module_Class' => $ID_Module_Class,
+                    'Module_Class_Name' => $Module_Class_Name,
+                    'Number_Plan' => $Number_Plan,
+                    'Number_Reality' => $Number_Reality,
+                    'School_Year' => $School_Year,
+                    'ID_Module' => $ID_Module,
+                    'ID_Teacher' => NULL ]
+                );
+            }catch(Exception $ex) {
+                 return back()->withErrors('Có lỗi');
+            }
         }
 
 		while($dateEnd >= $dateBegin ) {
-			
 			if(trim($phong) == null ) {
 				$sch = new schedules();
                 $nb_sch = DB::table('schedules')->where('ID_Module_Class','=', $ID_Module_Class_2)->where('ID_Room' ,'= ' ,$phong)->where('Shift_Schedules','=',$ca)->where('Day_Schedules','=', $dateBegin)->count();
@@ -263,36 +266,22 @@ class ScheduleImport implements ToCollection
 				);
 				
 				
-                DB::table('event')->insert([
-                    'title' => $ID_Module_Class_2." ca ".$ca,
-                    'start' => $dateBegin,
-                    'end' =>$dateBegin,
-                ]);
 			}
 			else {
+				try {
+                    DB::table('schedules')->insert(
+                        [   'ID_Module_Class' => $ID_Module_Class_2,
+                            'ID_Room' => $phong,
+                            'Shift_Schedules' => $ca,
+                            
+                            'Day_Schedules' => $dateBegin,
+                            'Number_Student' => NULL ]
+                        );
+                }catch(Exception $ex) {
+                     return back()->withErrors('Có lỗi');
+                }
 				
-				DB::table('schedules')->insert(
-				[	'ID_Module_Class' => $ID_Module_Class_2,
-				 	'ID_Room' => $phong,
-				 	'Shift_Schedules' => $ca,
-				 	
-				 	'Day_Schedules' => $dateBegin,
-				 	'Number_Student' => NULL ]
-				);
-				
-				
-                DB::table('event')->insert([
-                    'title' => $ID_Module_Class_2." phong ".$phong." ca ".$ca,
-                    'start' => $dateBegin,
-                    'end' =>$dateBegin,
-                ]);
 			}
-			
-            DB::table('event')->insert([
-                'title' => $ID_Module_Class_2." phong ".$phong." ca ".$ca,
-                'start' => $dateBegin,
-                'end' =>$dateBegin,
-            ]);
 			$dateBegin = $startTime->addWeeks(1);
 		}
 

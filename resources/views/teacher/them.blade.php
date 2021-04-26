@@ -64,11 +64,6 @@
 	            </div>
 
 	            <div class="form-group">
-	                <label for="inputUser_Name_Teacher">Tài khoản</label>
-	                <input type="text" name="inputUser_Name_Teacher" class="form-control" placeholder="Nhập vào tên người dùng" value = "{{old('inputUser_Name_Teacher')}}">
-	            </div>
-
-	            <div class="form-group">
 	                <label for="inputPassword_Teacher">Mật khẩu</label>
 	                <input type="password" name="inputPassword_Teacher" class="form-control" placeholder="Nhập mật khẩu" value = "{{old('inputPassword_Teacher')}}"> 
 	            </div>

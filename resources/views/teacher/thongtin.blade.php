@@ -7,6 +7,7 @@
    <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
+         
         <div class="row">
           <div class="col-12">
             <div class="card">
@@ -27,7 +28,7 @@
              						<th>Tên giảng viên</th>
              						<th>Số điện thoại</th>
              						<th>Địa chỉ email</th>
-             						<th>Tên tài khoản</th>
+             						
              						<th>Trình độ chuyên môn</th>
              						<th>Bộ môn</th>
              						<th>Xóa</th>
@@ -40,7 +41,7 @@
                 			<td> {{$gv->Name_Teacher}}</td>
                 			<td> {{$gv->Phone_Teacher}}</td>
                 			<td> {{$gv->Email_Teacher}}</td>
-                			<td> {{$gv->User_Name_Teacher}}</td>
+                			
                 			<td> {{$gv->University_Teacher_Degree}}</td>
                 			<td> {{$gv->ID_Department}}</td>
                 			<td class = " center"><i class="fas fa-trash"></i><a href="../teacher/xoa/{{$gv->ID_Teacher}}" onclick="return confirm('Xác nhận xóa giảng viên này?');">Xóa</a></td>

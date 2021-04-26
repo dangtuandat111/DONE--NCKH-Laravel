@@ -11,15 +11,18 @@ use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use App\models\teacher;
 use App\models\User;
+use App\models\department;
 use Illuminate\Support\Facades\Hash;
 
 class GiangVienController extends Controller
 {
     //
     public function getThongTin() {
-    	$teachers = DB::table('teacher')->where('IS_Delete', 1)->Paginate(10);
+    	$teachers = DB::table('teacher')->where('IS_Delete', 0)->Paginate(10);
+        $id_teacher = DB::table('teacher')->get();
+        $departments = DB::table('department')->get();
 
-		return view ('teacher.thongtin', ['teachers' => $teachers] );
+		return view ('teacher.thongtin', ['teachers' => $teachers, 'id_teacher' => $id_teacher, 'departments' => $departments ] );
     }
 
     public function addThongTin() {
@@ -40,14 +43,12 @@ class GiangVienController extends Controller
     	$rules = [
     		'inputTeacher_name' => 'required|max:50',
             'inputID_Teacher' => 'required',
-    		'inputPhone_number' => ['required' , 'max:10'],
     		'inputPermission' => 'required',
     		'inputEmail_Teacher' => 'required|email',
-    		'inputUser_Name_Teacher' => 'required|max:50',
     		'inputPassword_Teacher' => 'required',
-    		'inputDoB_Teacher' => 'required|date_format:m-d-Y',
+    		'inputDoB_Teacher' => 'required',
     		'inputID_Department' => 'required',
-            'phone' => 'required|regex:/(01)[0-9]{9}/'
+            'inputPhone_number' => 'required|max:10'
     	];
 
     	$messages = [
@@ -56,7 +57,7 @@ class GiangVienController extends Controller
     		'inputPhone_number.required' => 'Số điện thoại là  bắt buộc',
     		'inputPermission.required' => 'Phân quyền là bắt buộc',
     		'inputEmail_Teacher.required' => 'Email là bắt buộc',
-    		'inputUser_Name_Teacher.required' => 'Tên người dùng là bắt buộc',
+    		
     		'inputPassword_Teacher.required' => 'Mật khẩu là bắt buộc',
     		'inputDoB_Teacher.required' => 'Ngày sinh là bắt buộc',
     		'inputID_Department.required' => 'Bộ môn là bắt buộc',
@@ -67,7 +68,6 @@ class GiangVienController extends Controller
     		'inputEmail.email' => 'Địa chỉ email không đúng',
     		'inputUser.max' => 'Tên người dùng tối đa 50 kí tự',
     		'inputPassword.max' => 'Mật khẩu có độ dài không quá 200 kí tự',
-    		'inputDoB_Teacher.date_format' => 'Định dạng ngày tháng không đúng'
     		
     	];
 
@@ -94,23 +94,38 @@ class GiangVienController extends Controller
              return back()->withInput()->withErrors('Chọn lại phân quyền');
         }
 
+        // DB::table('account')->insert([
+        //     'username' => $request->inputTeacher_name,
+        //     'email' => $request->inputEmail_Teacher,
+        //     'password' => bcrypt($request->inputPassword_Teacher),
+        //     'permission' => $request->inputPermission,
+        // ]);
+
+        try {
+            $acc = new User();
+            $acc->username = $request->inputTeacher_name;
+            $acc->email = $request->inputEmail_Teacher;
+            $acc->password = bcrypt($request->inputPassword_Teacher);
+            $acc->permission = $request->inputPermission;
+            $acc->save();
+         }catch(QueryException $e) {
+            return back()->withInput()->withErrors('Lỗi thêm tài khoản');
+        }
+
 	    $gv = new teacher();
 	    $gv->ID_Teacher = $request->inputID_Teacher;
 	    $gv->Name_Teacher = $request->inputTeacher_name;
 	    $gv->Phone_Teacher = $request->inputPhone_number;
-	    $gv->Permission =  $request->inputPermission;
-	    $gv->Email_Teacher = $request->inputEmail;
-	    $gv->User_Name_Teacher = $request->inputUser;
-	    $gv->Password_Teacher = bcrypt($request->inputPassword);
+	    $gv->Email_Teacher = $request->inputEmail_Teacher;
+	    $gv->IS_Delete = 0;
 	    $gv->University_Teacher_Degree = $request->inputTeacher_Rank;
-	    
 	    $data = Carbon::createFromFormat('Y-m-d', $request->inputDoB_Teacher)->format('Y-m-d');
 	    $gv->DoB_Teacher = $data;
 	    $gv->ID_Department  = $request->inputID_Department;
-
+        $gv->ID = $acc->id;
 	    $gv->save();
-        if( !$this->userSave($request) ) return back()->withInput()->withErrors('Lỗi SQL');
        
+
 
 	    return redirect('admin/teacher/thongtin')->with('thongbao', 'Thêm giảng viên thành công');
     }
@@ -124,7 +139,6 @@ class GiangVienController extends Controller
             'inputPhone_Teacher' => 'required|max:10',
             'inputPermission' => 'required',
             'inputEmail_Teacher' => 'required|email',
-            'inputUser_Name_Teacher' => 'required|max:50',
             'inputDoB_Teacher' => 'required',
             'inputID_Department' => 'required'
         ];
@@ -135,14 +149,14 @@ class GiangVienController extends Controller
             'inputPhone_Teacher.required' => 'Số điện thoại là  bắt buộc',
             'inputPermission.required' => 'Phân quyền là bắt buộc',
             'inputEmail_Teacher.required' => 'Email là bắt buộc',
-            'inputUser_Name_Teacher.required' => 'Tên người dùng là bắt buộc',
+            
             'inputDoB_Teacher.required' => 'Ngày sinh là bắt buộc',
             'inputID_Department.required' => 'Bộ môn là bắt buộc',
 
             'inputName_Teacher.max' => 'Tên giảng viên tối đa 50 kí tự',
             'inputPhone_Teacher.max' => 'Số điện thoại chưa đúng format',
             'inputEmail_Teacher.email' => 'Địa chỉ email không đúng',
-            'inputUser_Name_Teacher.max' => 'Tên người dùng tối đa 50 kí tự',
+           
 
         ];
 
@@ -158,12 +172,12 @@ class GiangVienController extends Controller
             }
 
             if($request->inputPermission == "Admin") {
-                $request->inputPermission = 1;
+                $request->inputPermission = 4; // Bo mon
             }
             else if ($request->inputPermission == "Phòng đào tạo") {
-                $request->inputPermission =2;
+                $request->inputPermission =2; //Phong dao tao
             }
-            else $request->inputPermission = 0;
+            else $request->inputPermission = 1; // Giang vien
         }
        
 
@@ -172,14 +186,9 @@ class GiangVienController extends Controller
             ['Name_Teacher' => $request->inputName_Teacher,
             'ID_Teacher' =>$request->inputID_Teacher,
             'Phone_Teacher' => $request->inputPhone_Teacher,
-            'Permission' => $request->inputPermission,
             'Email_Teacher' => $request->inputEmail_Teacher,
-            'User_Name_Teacher' => $request->inputUser_Name_Teacher,
             'DoB_Teacher' => $request->inputDoB_Teacher,
-            'Password_Teacher' => bcrypt($request->inputPassword_Teacher),
             'ID_Department' => $request->inputID_Department]
-            
-
         );
         return redirect('admin/teacher/thongtin')->with('thongbao', 'Sửa thành công');
     }
@@ -187,23 +196,9 @@ class GiangVienController extends Controller
     public function deleteThongTin($id) {
        DB::table('teacher')->where('ID_Teacher' , $id)->update(
         [
-            'IS_Delete' => 0
+            'IS_Delete' => 1
         ]);
 
         return redirect('admin/teacher/thongtin')->with('thongbao', 'Xóa giảng viên thành công');
     }
-
-    public function userSave($request) {
-        try {
-             DB::table('users')->insert([
-                'name' => $request->inputName_Teacher,
-                'email' => $request->inputUser_Name_Teacher,
-                'password' => bcrypt($request->Password_Teacher),
-            ]);
-         }catch(QueryException $e) {
-             return false;
-         }
-        return true;
-    }
-
 }

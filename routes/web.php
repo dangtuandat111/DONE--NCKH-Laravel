@@ -35,11 +35,11 @@ Route::group(['middleware' => 'auth' ], function() {
 			Route::get('sua/{id_module}', 'App\Http\Controllers\HocPhanController@fixThongTin');
 			Route::get('them', 'App\Http\Controllers\HocPhanController@addThongTin');
 			Route::get('xoa/{id_module}', 'App\Http\Controllers\HocPhanController@deleteThongTin');
+			Route::get('filter','App\Http\Controllers\HocPhanController@getFilter');
 
 			Route::post('them', 'App\Http\Controllers\HocPhanController@postAdd');
 			Route::post('sua/{id_module}', 'App\Http\Controllers\HocPhanController@postFix');
 		});
-
 
 		Route::group(['prefix' => 'teacher'], function() {
 			Route::get('thongtin','App\Http\Controllers\GiangVienController@getThongTin');
@@ -70,21 +70,31 @@ Route::group(['middleware' => 'auth' ], function() {
 
 		Route::group(['prefix' => 'module_class'],function()  {
 			Route::get('thongtin','App\Http\Controllers\Module_classController@getThongTin');
+			Route::get('filter','App\Http\Controllers\Module_classController@getFilter');
 
 		});
-		Route::get('assign','App\Http\Controllers\AssignController@index');
-		Route::post('submit', 'App\Http\Controllers\AssignController@submit');
 
+		Route::group(['prefix' => 'fix'],function()  {
+			Route::get('thongtin','App\Http\Controllers\FixController@getThongTin');
+
+		});
+
+		Route::group(['prefix' => 'assign'],function()  {
+			Route::get('thongtin','App\Http\Controllers\AssignController@index');
+			Route::post('filter', 'App\Http\Controllers\AssignController@getFilter');
+			Route::post('submit', 'App\Http\Controllers\AssignController@submit');
+			Route::get('list','App\Http\Controllers\AssignController@index2');
+			Route::get('filterList', 'App\Http\Controllers\AssignController@getFilterList');
+
+			Route::get('getTeacher/{id}','App\Http\Controllers\AssignController@getGV');
+			Route::get('filter','App\Http\Controllers\AssignController@getFilter');
+			Route::get('xoa/{ID_Module_Class}', 'App\Http\Controllers\AssignController@deleteThongTin');
+		});
 	});
 
-
-
-	Route::get('fullcalendar','App\Http\Controllers\ScheduleController@index');
-	Route::get('fullcalendar/create','App\Http\Controllers\ScheduleController@create');
-	Route::post('fullcalendar/update','App\Http\Controllers\ScheduleController@update');
-	Route::post('fullcalendar/delete','App\Http\Controllers\ScheduleController@destroy');
-
-
+	Route::get('fullcalendar','App\Http\Controllers\ScheduleController@getAll');
+	Route::get('calendar','App\Http\Controllers\ScheduleController@getOne');
+	
 	Route::get('/home', ['as' => '/home' , 'uses' => 'App\Http\Controllers\LoginController@home']);
 	Route::get('/logout', 'App\Http\Controllers\LoginController@Logout');
 

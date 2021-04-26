@@ -100,66 +100,7 @@
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset('AdminLTE-3.0.5/dist/js/demo.js') }}"></script>
 
-<script>
-  $(function () {
-    $("#example1").DataTable({
-      "responsive": true,
-      "autoWidth": false,
-       'columnDefs': [{
-         'targets': 0,
-         'searchable': false,
-         'orderable': false,
-         'className': 'dt-body-center',
-        
-      }],
-      'order': [[1, 'asc']]
-   });
-
-  
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
-    });
-
-   // Handle click on "Select all" control
-$('#example-select-all').on('click', function(){
-   // Get all rows with search applied
-   var rows = table.rows({ 'search': 'applied' }).nodes();
-   // Check/uncheck checkboxes for all rows in the table
-   $('input[type="checkbox"]', rows).prop('checked', this.checked);
-});
-
-// Handle form submission event
-   // $('#frm-example').on('submit', function(e){
-   //    var form = this;
-
-   //    // Iterate over all checkboxes in the table
-   //    table.$('input[type="checkbox"]').each(function(){
-   //       // If checkbox doesn't exist in DOM
-   //       if(!$.contains(document, this)){
-   //          // If checkbox is checked
-   //          if(this.checked){
-   //             //Create a hidden element
-   //             $(form).append(
-   //                $('<input>')
-   //                   .attr('type', 'hidden')
-   //                   .attr('id', this.ID_Module_Class + this.Module_Class_Name)
-                     
-   //                   .val(this.name)
-   //             );
-   //          }
-   //       }
-   //    });
-   // });
-
-  });
-  
-</script>
+<script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
 @yield('scripts')
 </html>

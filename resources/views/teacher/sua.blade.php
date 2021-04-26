@@ -69,16 +69,6 @@
 	              </div>
 
 	              <div class="form-group">
-	                <label for="inputUser_Name_Teacher">Tên tài khoản giảng viên</label>
-	                <input type="text" name="inputUser_Name_Teacher" class="form-control" placeholder="Nhập vào tên tài khoản" value = "{{$gv->User_Name_Teacher}}">
-	              </div>
-
-	              <div class="form-group">
-	                <label for="inputPassword_Teacher">Mật khẩu</label>
-	                <input type="password" name="inputPassword_Teacher" class="form-control" placeholder="Nhập vào mật khẩu" value = "">
-	              </div>
-
-	              <div class="form-group">
 	                <label for="inputEmail_Teacher">Địa chỉ email</label>
 	                <input type="text" name="inputEmail_Teacher" class="form-control" placeholder="Nhập vào email" value = "{{$gv->Email_Teacher}}">
 	              </div>
@@ -89,9 +79,7 @@
 	                  <option selected disabled >Chọn bộ môn</option>
 		                	@foreach($department as $dp)
 		                		<option value="{{$dp->ID_Department}}" >{{$dp->Department_Name}}</option>
-
 		                	@endforeach
-
 	                </select>
 	              </div>
 	       

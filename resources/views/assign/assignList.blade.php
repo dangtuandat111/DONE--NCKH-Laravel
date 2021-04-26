@@ -1,5 +1,5 @@
-@section('DeMuc', 'Phân Giảng')
-@section('title', 'Phân Giảng')
+@section('DeMuc', 'Lịch phân giảng')
+@section('title', 'Lịch phân giảng')
 
 @extends('admin.dashboard')
 @section('content')
@@ -74,7 +74,7 @@
             <!-- Default box -->
 	          	<div class="card">
 	              <div class="card-header">
-                  <h3 class="card-title">Danh sách lớp học phần</h3> 
+                  <h3 class="card-title">Danh sách lớp học phần đã phân giảng</h3> 
                 </div>
 	              <!-- /.card-header -->
                 
@@ -85,40 +85,27 @@
                   <!--begin form-->
                   <input type = "hidden"  name = "_token" value = "{{csrf_token()}}" />
                   <div class="row">
-                    <div class="col-12">
-                      <input type="submit" value="Phan Giang" class="btn btn-primary" id="submitPG">
-                    </div>
+                    
                   </div>
 
-                  <div class= "form-group">
-                    <div class = "col-6" style = "margin-top: 10px;">
-                      <select id="select_gv" class="form-control custom-select" name ="select_gv">
-                          <option value ="">Chọn giảng viên</option>
-                          @foreach($teacher as $gv) 
-                            <option class = "option" value = "{{$gv->ID_Teacher}}">{{$gv->Name_Teacher}}</option>
-                          @endforeach()
-                      </select>
-                    </div>
-                  </div>
                   <table class="table table-bordered table-striped">
                       <thead>
                       <tr>
-                        <th></th>
                         <th>Mã lớp học phần</th>
                         <th>Tên lớp học phần</th>
                         <th>Số sinh viên</th>
                         <th>Kì học</th>
+                        <th>Sửa</th>
                       </tr>
                       </thead>
                       <tbody id = "tbody">
                         @foreach($schedules as $sch)
                           <tr>
-                            <th><input type ="checkbox"  name = <?php $a = str_replace(' ', '/', $sch->ID_Module_Class); echo $a; ?> value = <?php $a = str_replace(' ', '/', $sch->ID_Module_Class); echo $a; ?>></th>
                             <td>{{$sch->ID_Module_Class}}</td>
                             <td>{{$sch->Module_Class_Name}}</td>
                             <td>{{$sch->Number_Reality}}</td>
                             <td>{{$sch->School_Year}}</td>
-                            
+                			<td class = " center"><i class="fas fa-eye"></i><a href = "../assign/xoa/{{$sch->ID_Module_Class}}" onclick="return confirm('Xác nhận xóa phân giảng này?');">Xóa</a></td>
                           </tr>
                         @endforeach
                       </tbody>
@@ -142,12 +129,10 @@
 @section('scripts')
 
 <script>
-  $(document).ready(function() {
+$(document).ready(function() {
     $("#select_dp").change(function() {
       var dp = $(this).val();
-      $.get("getTeacher/"+dp,function(data){
-        $("#select_gv").html(data);
-      });
+      
     });
 
     $("#Filter").click(function() {
@@ -159,26 +144,22 @@
       $.ajax({
         type: 'get',
         dataType: 'json',
-        url: "{{url('/admin/assign/filter')}}",
+        url: "{{url('/admin/assign/filterList')}}",
         data: 'md='+md+'&dp='+dp+'&sy='+sy,
         //module department credit
         success:function(response) {
           console.log(response);
           $("#tbody").empty();
-          //$("#pagination").empty();
-          var data = response.data;
-          //var pag = "";
-          // var link = response.links;
-          // console.log(link);
-           $("#pagination").append(response.links);
-          $.each(data, function (index,val) { //looping table detail bahan
+          $("#pagination").empty();
+          
+          $.each(response, function (index,val) { //looping table detail bahan
               var item = `
                 <tr class="" style="font-size:14px">
-                  <th><input type ="checkbox"  name = <?php $a = str_replace(' ', '/', $sch->ID_Module_Class); echo $a; ?> value = <?php $a = str_replace(' ', '/', $sch->ID_Module_Class); echo $a; ?> ></th>
-                  <td>${val.ID_Module_Class}</td>
+                  	<td>${val.ID_Module_Class}</td>
                   <td>${val.Module_Class_Name}</td>
                   <td>${val.Number_Reality}</td>
                   <td>${val.School_Year}</td>
+                  	<td class = " center"><i class="fas fa-eye"></i><a href = "../assign/xoa/${val.School_Year}" onclick="return confirm('Xác nhận xóa phân giảng này?');">Xóa</a></td>
                 </tr>
                  `;
               $("#tbody").append(item);

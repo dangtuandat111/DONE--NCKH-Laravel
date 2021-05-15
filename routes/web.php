@@ -76,7 +76,10 @@ Route::group(['middleware' => 'auth' ], function() {
 
 		Route::group(['prefix' => 'fix'],function()  {
 			Route::get('thongtin','App\Http\Controllers\FixController@getThongTin');
+			Route::get('getPaginate','App\Http\Controllers\FixController@getPaginate');
+			Route::post('submitChange', 'App\Http\Controllers\FixController@submitChange');
 
+			Route::get('yeucau',  'App\Http\Controllers\RequestFixController@getThongTin');
 		});
 
 		Route::group(['prefix' => 'assign'],function()  {

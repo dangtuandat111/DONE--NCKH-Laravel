@@ -34,6 +34,7 @@ class teacherImport implements ToCollection
     			//echo "day bi loi ";
     		}
     		else {
+    			dd($row);
     			$magv = $row[0];
     			$tengv = $row[1];
     			$dob = $row[2];
